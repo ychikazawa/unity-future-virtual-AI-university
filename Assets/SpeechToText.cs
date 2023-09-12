@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,69 +12,56 @@ public class SpeechToText : MonoBehaviour
     static string speechKey = EnvManager.Get("SPEECH_KEY");
     static string speechRegion = EnvManager.Get("SPEECH_REGION");
 
-    // Start is called before the first frame update
+    SpeechConfig speechConfig;
+    AudioConfig audioConfig;
+    SpeechRecognizer speechRecognizer;
+    
+    public string RecognizedText { get; private set; }
+
+    // Events
+    // Other scripts can subscribe to this event.
+    // Note: this script should not have any dependencies on other scripts. 
+    public event Action<string> OnRecognizing;
+    public event Action<string> OnRecognized;
+
+
     void Start()
     {       
+        speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+        speechConfig.SpeechRecognitionLanguage = "ja-JP";
+        audioConfig = AudioConfig.FromDefaultMicrophoneInput();
+        speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
+    }
+
+
+    public void OnStart()
+    {
+        Debug.Log("OnStart");
         Task.Run(() => Recognize());
     }
 
-    
-    // Update is called once per frame
-    void Update()
+
+    public void OnStop()
     {
-        
+        Debug.Log("OnStop");
+        Task.Run(() => StopRecognition());
     }
 
-    
-    async static Task RecognizeOnce()
-    {
-        var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
-        speechConfig.SpeechRecognitionLanguage = "ja-JP";
-        using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
-        using var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
-
-        Debug.Log("Speak into your microphone.");
-        var speechRecognitionResult = await speechRecognizer.RecognizeOnceAsync();
-        OutputSpeechRecognitionResult(speechRecognitionResult);
+    void OnDestroy() {
+        speechRecognizer.Dispose();
     }
 
-    
-    static void OutputSpeechRecognitionResult(SpeechRecognitionResult speechRecognitionResult)
-    {
-        switch (speechRecognitionResult.Reason)
-        {
-            case ResultReason.RecognizedSpeech:
-                Debug.Log($"RECOGNIZED: Text={speechRecognitionResult.Text}");
-                break;
-            case ResultReason.NoMatch:
-                Debug.Log($"NOMATCH: Speech could not be recognized.");
-                break;
-            case ResultReason.Canceled:
-                var cancellation = CancellationDetails.FromResult(speechRecognitionResult);
-                Debug.Log($"CANCELED: Reason={cancellation.Reason}");
 
-                if (cancellation.Reason == CancellationReason.Error)
-                {
-                    Debug.Log($"CANCELED: ErrorCode={cancellation.ErrorCode}");
-                    Debug.Log($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
-                    Debug.Log($"CANCELED: Did you set the speech resource key and region values?");
-                }
-                break;
-        }
-    }
-
-    async static Task Recognize()
+    async Task Recognize()
     {
-        var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
-        speechConfig.SpeechRecognitionLanguage = "ja-JP";
         var stopRecognition = new TaskCompletionSource<int>();
-        using var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
-        using var speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
         
         // subscribe recognizer events
         speechRecognizer.Recognizing += (s, e) =>
         {
             Debug.Log($"RECOGNIZING: Text={e.Result.Text}");
+            // Invoke the event
+            OnRecognizing.Invoke(e.Result.Text);
         };
 
         speechRecognizer.Recognized += (s, e) =>
@@ -81,6 +69,10 @@ public class SpeechToText : MonoBehaviour
             if (e.Result.Reason == ResultReason.RecognizedSpeech)
             {
                 Debug.Log($"RECOGNIZED: Text={e.Result.Text}");
+                // Save the recognized text
+                RecognizedText = e.Result.Text;
+                // Invoke the event
+                OnRecognized.Invoke(e.Result.Text);
             }
             else if (e.Result.Reason == ResultReason.NoMatch)
             {
@@ -111,5 +103,10 @@ public class SpeechToText : MonoBehaviour
         await speechRecognizer.StartContinuousRecognitionAsync();
         Debug.Log("Say something...");
         Task.WaitAny(new[] { stopRecognition.Task });
+    }
+
+    async Task StopRecognition()
+    {
+        await speechRecognizer.StopContinuousRecognitionAsync();
     }
 }
