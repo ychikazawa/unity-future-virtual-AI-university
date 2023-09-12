@@ -12,10 +12,13 @@ public class SpeechToText : MonoBehaviour
     static string speechKey = EnvManager.Get("SPEECH_KEY");
     static string speechRegion = EnvManager.Get("SPEECH_REGION");
 
-    SpeechConfig speechConfig;
-    AudioConfig audioConfig;
-    SpeechRecognizer speechRecognizer;
+    protected SpeechConfig speechConfig;
+    protected AudioConfig audioConfig;
+    protected SpeechRecognizer speechRecognizer;
+    protected TaskCompletionSource<int> stopRecognition;
     
+    // Properties
+    // Note: RecognizedText is never used yet.
     public string RecognizedText { get; private set; }
 
     // Events
@@ -26,36 +29,14 @@ public class SpeechToText : MonoBehaviour
 
 
     void Start()
-    {       
+    {   
+        // initialize speech recognizer
         speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
         speechConfig.SpeechRecognitionLanguage = "ja-JP";
         audioConfig = AudioConfig.FromDefaultMicrophoneInput();
         speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
-    }
+        stopRecognition = new TaskCompletionSource<int>();
 
-
-    public void OnStart()
-    {
-        Debug.Log("OnStart");
-        Task.Run(() => Recognize());
-    }
-
-
-    public void OnStop()
-    {
-        Debug.Log("OnStop");
-        Task.Run(() => StopRecognition());
-    }
-
-    void OnDestroy() {
-        speechRecognizer.Dispose();
-    }
-
-
-    async Task Recognize()
-    {
-        var stopRecognition = new TaskCompletionSource<int>();
-        
         // subscribe recognizer events
         speechRecognizer.Recognizing += (s, e) =>
         {
@@ -99,7 +80,29 @@ public class SpeechToText : MonoBehaviour
             Debug.Log("\n    Session stopped event.");
             stopRecognition.TrySetResult(0);
         };
+    }
 
+
+    public void OnStart()
+    {
+        Debug.Log("OnStart");
+        Task.Run(() => Recognize());
+    }
+
+
+    public void OnStop()
+    {
+        Debug.Log("OnStop");
+        Task.Run(() => StopRecognition());
+    }
+
+    void OnDestroy() {
+        speechRecognizer.Dispose();
+    }
+
+
+    async Task Recognize()
+    {
         await speechRecognizer.StartContinuousRecognitionAsync();
         Debug.Log("Say something...");
         Task.WaitAny(new[] { stopRecognition.Task });
@@ -108,5 +111,6 @@ public class SpeechToText : MonoBehaviour
     async Task StopRecognition()
     {
         await speechRecognizer.StopContinuousRecognitionAsync();
+        Debug.Log("Stop recognition.");
     }
 }
