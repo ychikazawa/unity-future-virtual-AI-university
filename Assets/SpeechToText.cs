@@ -24,8 +24,8 @@ public class SpeechToText : MonoBehaviour
     // Events
     // Other scripts can subscribe to this event.
     // Note: this script should not have any dependencies on other scripts. 
-    public event Action<string> OnRecognizing;
-    public event Action<string> OnRecognized;
+    public event Action<string> OnRecognizing = delegate { };
+    public event Action<string> OnRecognized = delegate { };
 
 
     void Start()
