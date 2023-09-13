@@ -7,8 +7,10 @@ using UnityEngine.UIElements;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private SpeechToText speechToText;
+    [SerializeField] private TextToSpeech textToSpeech;
     [SerializeField] private UnityEvent onButtonStartClicked;
     [SerializeField] private UnityEvent onButtonStopClicked;
+    [SerializeField] private UnityEvent onButtonSpeakClicked;
 
     private UIDocument uiDocument;
     private string currentRecognizingText;
@@ -26,6 +28,9 @@ public class UIController : MonoBehaviour
 
         var buttonStopElement = uiDocument.rootVisualElement.Q<Button>("ButtonStop");
         buttonStopElement.clicked += () => onButtonStopClicked.Invoke();
+
+        var buttonSpeakElement = uiDocument.rootVisualElement.Q<Button>("ButtonSpeak");
+        buttonSpeakElement.clicked += () => onButtonSpeakClicked.Invoke();
 
         speechToText.OnRecognizing += AddRecognizingText;
         speechToText.OnRecognized += AddRecognizedText;
