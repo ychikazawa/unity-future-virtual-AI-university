@@ -8,15 +8,11 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] private SpeechToText speechToText;
     [SerializeField] private TextToSpeech textToSpeech;
-    [SerializeField] private UnityEvent onButtonStartClicked;
-    [SerializeField] private UnityEvent onButtonStopClicked;
-    [SerializeField] private UnityEvent onButtonSpeakClicked;
 
     private UIDocument uiDocument;
     private string currentRecognizingText;
     private List<string> textBuffer = new List<string>();
 
-    
 
     // Start is called before the first frame update
     void Start()
@@ -24,13 +20,13 @@ public class UIController : MonoBehaviour
         uiDocument = GetComponent<UIDocument>();
 
         var buttonStartElement = uiDocument.rootVisualElement.Q<Button>("ButtonStart");
-        buttonStartElement.clicked += () => onButtonStartClicked.Invoke();   
+        buttonStartElement.clicked += () => speechToText.OnStart();   
 
         var buttonStopElement = uiDocument.rootVisualElement.Q<Button>("ButtonStop");
-        buttonStopElement.clicked += () => onButtonStopClicked.Invoke();
+        buttonStopElement.clicked += () => speechToText.OnStop();
 
         var buttonSpeakElement = uiDocument.rootVisualElement.Q<Button>("ButtonSpeak");
-        buttonSpeakElement.clicked += () => onButtonSpeakClicked.Invoke();
+        buttonSpeakElement.clicked += () => textToSpeech.OnStart(speechToText.RecognizedText != null ? speechToText.RecognizedText : "何か話してください。あなたの声をリピートします。");
 
         speechToText.OnRecognizing += AddRecognizingText;
         speechToText.OnRecognized += AddRecognizedText;

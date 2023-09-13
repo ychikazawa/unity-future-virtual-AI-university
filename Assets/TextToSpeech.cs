@@ -62,10 +62,10 @@ public class TextToSpeech : MonoBehaviour
     }
 
 
-    public void OnStart()
+    public void OnStart(string speechText)
     {
         Debug.Log("TextToSpeech.OnStart()");
-        Task.Run(() => Speech("Hello, world!") );
+        Task.Run(() => Speech(speechText) );
         // Invoke the event
         OnSpeechStart.Invoke();
     }

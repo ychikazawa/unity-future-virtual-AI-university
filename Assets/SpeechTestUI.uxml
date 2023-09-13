@@ -11,6 +11,5 @@
     </ui:VisualElement>
     <ui:VisualElement name="TextToSpeech" style="flex-grow: 1;">
         <ui:Button text="Speak" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonSpeak" style="align-self: auto; flex-direction: column; align-items: auto; width: 135px;" />
-        <ui:Label tabindex="-1" text="..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="TextForSpeech" />
     </ui:VisualElement>
 </ui:UXML>
