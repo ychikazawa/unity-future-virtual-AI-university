@@ -1,10 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement style="flex-grow: 1;" />
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-        <ui:Button text="Start Recognition" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonStart" style="-unity-text-align: middle-center; height: 37px; width: 143px; align-items: center;" />
-        <ui:Button text="Stop Recognition" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonStop" style="height: 37px; width: 144px; align-items: center;" />
+    <ui:VisualElement name="SpeechToText" style="flex-grow: 1;">
+        <ui:VisualElement name="ButtonContainer" style="flex-grow: 1; flex-direction: row;">
+            <ui:Button text="Start Recognition" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonStart" style="-unity-text-align: middle-center; height: 37px; width: 143px; align-items: center;" />
+            <ui:Button text="Stop Recognition" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonStop" style="height: 37px; width: 144px; align-items: center;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:Label tabindex="-1" text="Say something..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="OutputField" style="height: 212px; width: 447px;" />
+        </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement style="flex-grow: 1;">
-        <ui:Label tabindex="-1" text="Say something..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="OutputField" style="height: 290px; width: 382px;" />
+    <ui:VisualElement name="TextToSpeech" style="flex-grow: 1;">
+        <ui:Button text="Speak" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonSpeak" style="align-self: auto; flex-direction: column; align-items: auto; width: 135px;" />
     </ui:VisualElement>
 </ui:UXML>
