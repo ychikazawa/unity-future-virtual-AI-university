@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 539690884}
   - component: {fileID: 539690883}
   - component: {fileID: 539690885}
+  - component: {fileID: 539690886}
   m_Layer: 0
   m_Name: SpeechController
   m_TagString: Untagged
@@ -181,6 +182,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voiceType: 6
+--- !u!114 &539690886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539690882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33f821a2d2e993439d915bfdbac0e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &594193844
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,51 +257,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speechToText: {fileID: 539690883}
   textToSpeech: {fileID: 539690885}
-  onButtonStartClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 539690883}
-        m_TargetAssemblyTypeName: SpeechToText, Assembly-CSharp
-        m_MethodName: OnStart
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onButtonStopClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 539690883}
-        m_TargetAssemblyTypeName: SpeechToText, Assembly-CSharp
-        m_MethodName: OnStop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onButtonSpeakClicked:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 539690885}
-        m_TargetAssemblyTypeName: TextToSpeech, Assembly-CSharp
-        m_MethodName: OnStart
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
