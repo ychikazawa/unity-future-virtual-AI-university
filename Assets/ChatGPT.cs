@@ -37,7 +37,7 @@ public class ChatGPT : MonoBehaviour
             string[] SettingTextForPreprocessing;
             string SettingText;
             // get the setting text from the .txt file
-            using (StreamReader reader = new StreamReader("./AgentSettings.txt", Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(".AgentSettings.txt", Encoding.UTF8))
             {
                 SettingTextForPreprocessing = reader.ReadToEnd().Split('\n');
             }
@@ -49,9 +49,9 @@ public class ChatGPT : MonoBehaviour
                 {"content", SettingText}
             });
         }
-        catch
+        catch (System.Exception e)
         {
-            Debug.Log("Failed to read the setting text...");
+            Debug.Log($"Failed to read the setting text... {e}");
         }
 
         await GPTCompletion("Hello, my name is John. ");
@@ -92,7 +92,7 @@ public class ChatGPT : MonoBehaviour
 
         var result = await ConnectToOpenAPI(url, jsonBody);                     // get response from GPT
         var resText = result["choices"][0]["message"]["content"].ToString();   // get the text from the response
-        Debug.Log(resText);
+        Debug.Log($"GPT response: {resText}");
         // if(memorablePairs != 0)     // if memorize the past(history) messages
         // {
         //     Dictionary<string, string> ResponseMessage = new Dictionary<string, string>
