@@ -52,7 +52,7 @@ public class TextToSpeech : MonoBehaviour
     public event Action OnSpeechEnd = delegate { };
 
 
-    void Start()
+    void Awake()
     {
         // Initialize voice type name
         voiceTypeName = VoiceListExtensions.ToVoiceTypeName(voiceType);
@@ -70,7 +70,7 @@ public class TextToSpeech : MonoBehaviour
         OnSpeechStart.Invoke();
     }
 
-    async Task Speech(string speechText)
+    public async Task Speech(string speechText)
     {
         using (var speechSynthesizer = new SpeechSynthesizer(speechConfig))
         {

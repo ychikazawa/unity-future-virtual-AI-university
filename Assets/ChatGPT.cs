@@ -27,7 +27,7 @@ public class ChatGPT : MonoBehaviour
 
 
     // Start is called before the first frame update
-    async void Start()
+    async void Awake()
     {
         url = $"https://{instanceName}.openai.azure.com/openai/deployments/{deploymentName}/chat/completions?api-version={apiVersion}";
 
@@ -54,7 +54,7 @@ public class ChatGPT : MonoBehaviour
             Debug.Log($"Failed to read the setting text... {e}");
         }
 
-        await GPTCompletion("Hello, my name is John. ");
+        // await GPTCompletion("Hello, my name is John. ");
     }
 
 

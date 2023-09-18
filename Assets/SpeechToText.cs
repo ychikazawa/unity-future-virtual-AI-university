@@ -28,7 +28,7 @@ public class SpeechToText : MonoBehaviour
     public event Action<string> OnRecognized = delegate { };
 
 
-    void Start()
+    void Awake()
     {   
         // initialize speech recognizer
         speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
