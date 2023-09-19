@@ -22,7 +22,7 @@ public class AIController : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
-        await textToSpeech.Speech("こんにちは。");
+        await textToSpeech.Speech("Hello.");
         Listen();
     }
 

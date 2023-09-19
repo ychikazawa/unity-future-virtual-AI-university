@@ -32,7 +32,7 @@ public class SpeechToText : MonoBehaviour
     {   
         // initialize speech recognizer
         speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
-        speechConfig.SpeechRecognitionLanguage = "ja-JP";
+        speechConfig.SpeechRecognitionLanguage = "en-US";
         audioConfig = AudioConfig.FromDefaultMicrophoneInput();
         speechRecognizer = new SpeechRecognizer(speechConfig, audioConfig);
         stopRecognition = new TaskCompletionSource<int>();
